@@ -7,27 +7,22 @@ def load_ipc_text(file_path):
 		
 # Function to search for the relevant section based on the question
 def search_ipc_section(question, ipc_text):
-	# Extract the section number from the question (e.g., "Section 302")
-	match = re.search(r"section (\d+)", question, re.IGNORECASE)
-		
-	if match:
-		section_number = match.group(1) # Get the section number from the question
-			
-		# Search for the section in the IPC text
-		section_pattern = rf"(?<=Section {section_number}\.)(.*?)(?=Section \d+\.|$)"
-		section_match = re.search(section_pattern, ipc_text, re.DOTALL)
-			
-		if section_match:
-			return section_match.group(0).strip()
-		else:
-			return f"Sorry, Section {section_number} not found in the IPC."
-	else:
-		return "Please ask about a specific section number (e.g., 'What is Section 302?')"
+    match = re.search(r"section (\d+)", question, re.IGNORECASE)
+    if not match:
+        return "Please ask about a specific section number (e.g., 'What is Section 302?')"
 
-# Main function to run the IPC chatbot
+    section_number = match.group(1)
+    sections = ipc_text.split("Section ")
+    
+    for sec in sections:
+        if sec.startswith(f"{section_number}."):
+            return "Section " + sec.strip()
+    
+    return f"Sorry, Section {section_number} not found in the IPC."
+
 def ipc_chatbot():
 	# Load the IPC document
-	ipc_text = load_ipc_text('ipc.txt') # Ensure 'ipc.txt' file is in the correct path
+	ipc_text = load_ipc_text('ipc.txt')
 	print("Indian Penal Code Chatbot :")
 	print("You can ask about any section of the IPC. Type 'exit' to quit.")
 		
