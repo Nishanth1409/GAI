@@ -43,5 +43,6 @@ def ipc_chatbot():
 		# Display the response
 		print("Bot:", answer)
 
-if name__ == "__main__":
+if __name__ == "__main__":
+
 	ipc_chatbot()
