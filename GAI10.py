@@ -1,43 +1,29 @@
-import re
 
-# Function to load the IPC document
-def load_ipc_text(file_path):
-	with open(file_path, 'r', encoding='utf-8') as file:
-		return file.read()
-		
-# Function to search for the relevant section based on the question
-def search_ipc_section(question, ipc_text):
-    match = re.search(r"section (\d+)", question, re.IGNORECASE)
-    if not match:
-        return "Please ask about a specific section number (e.g., 'What is Section 302?')"
+def extract(file):
+    with open(file, "r", encoding="utf-8") as f:
+        text = f.read()
+    return text
 
-    section_number = match.group(1)
-    sections = ipc_text.split("Section ")
+
+def search(query, ipc):
+    query = query.lower()
+    lines = ipc.split("\n")
+    results = [line for line in lines if query in line.lower()]
+    return results if results else ["No relevant section found."]
+
+def chatbot():
+    print("Loading IPC text document...")
+    ipc = extract("8prg.txt")  # <-- Make sure your text file is named IPC.txt
+    print("IPC document loaded. Type 'exit' to quit.\n")
     
-    for sec in sections:
-        if sec.startswith(f"{section_number}."):
-            return "Section " + sec.strip()
-    
-    return f"Sorry, Section {section_number} not found in the IPC."
+    while True:
+        query = input("Ask a question about the IPC: ")
+        if query.lower() == "exit":
+            print("Goodbye!")
+            break
+        results = search(query, ipc)
+        print("\n".join(results))
+        print("-" * 50)
 
-def ipc_chatbot():
-	# Load the IPC document
-	ipc_text = load_ipc_text('ipc.txt')
-	print("Indian Penal Code Chatbot :")
-	print("You can ask about any section of the IPC. Type 'exit' to quit.")
-		
-	while True:
-		# Take user input
-		question = input("You: ")
-		if question.lower() == 'exit':
-			break
-			
-		# Get the answer from the IPC text
-		answer = search_ipc_section(question, ipc_text)
-			
-		# Display the response
-		print("Bot:", answer)
-
-if __name__ == "__main__":
-
-	ipc_chatbot()
+# Start chatbot
+chatbot()
