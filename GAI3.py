@@ -2,11 +2,7 @@ from gensim.models import Word2Vec
 def cw(corpus):
     model = Word2Vec(
         sentences=corpus, 
-        vector_size=50,
-        window=5, 
-        min_count=1, 
-        workers=4,
-        epochs=10,
+        min_count=1,
         )
     return model
 def anal(model, word):
