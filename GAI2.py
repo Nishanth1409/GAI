@@ -1,19 +1,42 @@
-import matplotlib
-matplotlib.use('TkAgg')
-from sklearn.decomposition import PCA  # Corrected import statement
 import matplotlib.pyplot as plt
-import numpy as np
-words = ['football', 'basketball', 'cricket', 'technology', 'computer', 'robot', 'AI', 'cloud', 'python', 'data']
-np.random.seed(42)
-word_vectors = {word: np.random.rand(100) for word in words}
-pca = PCA(n_components=2)
-pca_result = pca.fit_transform([word_vectors[word] for word in words])
-plt.figure(figsize=(8, 8))
-plt.scatter(pca_result[:, 0], pca_result[:, 1])
-for i, word in enumerate(words):
-    plt.annotate(word, (pca_result[i, 0], pca_result[i, 1]))
-plt.title('Word Embedding Visualization with PCA')
-plt.savefig(r'D:\PESITM\Studies\6 sem\LAB\GAI\word_embedding_visualization.png')
-plt.show()
+from sklearn.decomposition import PCA
+from gensim.downloader import load
 
+# Dimensionality reduction using PCA
+def rd(ems):
+    pca = PCA(n_components=2)
+    r = pca.fit_transform(ems)
+    return r
 
+# Visualize word embeddings
+def visualize(words, ems):
+    plt.figure(figsize=(10, 6))
+    for i, word in enumerate(words):
+        x, y = ems[i]
+        plt.scatter(x, y)
+        plt.text(x + 0.02, y + 0.02, word, fontsize=12)
+    plt.title("2D PCA Projection of Word Embeddings")
+    plt.grid(True)
+    plt.show()
+
+# Generate semantically similar words
+def gsm(word):
+    print(f"\nTop 5 words similar to '{word}':")
+    sw = model.most_similar(word, topn=5)
+    for word, s in sw:
+        print(word, s)
+
+# Load pre-trained GloVe model from Gensim API
+print("Loading pre-trained GloVe model (50 dimensions)...")
+model = load("glove-wiki-gigaword-50")
+
+# Define a list of sports-related words
+words = ['football', 'basketball', 'soccer', 'tennis', 'cricket']
+ems = [model[word] for word in words]
+
+# Reduce dimensions and visualize
+e = rd(ems)
+visualize(words, e)
+
+# Show similar words for 'programming'
+gsm("programming")

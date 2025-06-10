@@ -1,37 +1,33 @@
-from langchain_community.llms import Cohere # Import from the correct package
+from langchain_community.llms import Cohere
 from langchain.prompts import PromptTemplate
 import os
 
-# Set up the Cohere API key
-COHERE_API_KEY = "your-key-here"
-os.environ["COHERE_API_KEY"] = COHERE_API_KEY
+# Set your Cohere API key
+COHERE_API_KEY = "uvw9ehIHyTzOwhsYlsRfr6bgQZufcGgp3A0cIYDK"
 
-# Load a text document from your file system
+# Initialize the Cohere LLM with the API key
+llm = Cohere(cohere_api_key=COHERE_API_KEY)
+
+# Load the document
 file_path = "8prg.txt"
 
 try:
-	with open(file_path, "r") as file:
-		document_text = file.read()
+    with open(file_path, "r") as file:
+        document_text = file.read()
 except FileNotFoundError:
-	print(f"File not found: {file_path}")
-	exit()
+    print(f"File not found: {file_path}")
+    exit()
 
-# Define a prompt template
-template = """You are an assistant tasked with analyzing text. Given the following document: {document} Provide a summary in three concise bullet points: """
+# Create the prompt
 prompt = PromptTemplate(
-	input_variables=["document"],
-	template=template,
-	)
+    input_variables=["document"],
+    template="You are an assistant tasked with analyzing text. Given the following document: {document} Provide a summary in three concise bullet points:"
+)
 
-# Initialize the Cohere model
-llm = Cohere()
-
-# Format the prompt and get the output
+# Format and invoke
 formatted_prompt = prompt.format(document=document_text)
-
-# Using the 'invoke()' method to generate the output instead of '__call_'
 response = llm.invoke(formatted_prompt)
 
-# Display the output
+# Output
 print("Response:")
 print(response)
