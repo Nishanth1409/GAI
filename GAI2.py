@@ -13,7 +13,7 @@ def visualize(words, ems):
     plt.figure(figsize=(10, 6))
     for i, word in enumerate(words):
         x, y = ems[i]
-        plt.scatter(x, y, marker='o', color='blue')
+        plt.scatter(x, y)
         plt.text(x + 0.02, y + 0.02, word, fontsize=12)
     plt.title("2D PCA Projection of Word Embeddings")
     plt.grid(True)

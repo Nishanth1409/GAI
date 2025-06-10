@@ -23,7 +23,7 @@ def enrich(prompt):
             continue
     return enriched_prompt
 
-# Example prompt to be enriched
+# Example prompt to be enriched 
 original_prompt = "lung cancer"
 enriched_prompt = enrich(original_prompt)
 
