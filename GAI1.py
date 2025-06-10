@@ -1,9 +1,6 @@
 from gensim.downloader import load
-
-
 print("Loading pre-trained GloVe model (50 dimensions)...")
 model = load("glove-wiki-gigaword-50")
-
 def ewr():
     result = model.most_similar(positive=['king', 'woman'], negative=['man'], topn=1)
     print("\nking - man + woman = ?", result[0][0])
@@ -17,6 +14,4 @@ def ewr():
     print("\nTop 5 words similar to 'programming':")
     for word, similarity in result:
         print(word, similarity)
-
-# Run the function
 ewr()
